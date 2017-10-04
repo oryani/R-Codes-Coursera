@@ -1,0 +1,3366 @@
+
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.66 (6996) x86_64-apple-darwin13.4.0]
+
+> help
+function (topic, package = NULL, lib.loc = NULL, verbose = getOption("verbose"), 
+    try.all.packages = getOption("help.try.all.packages"), help_type = getOption("help_type")) 
+{
+    types <- c("text", "html", "pdf")
+    if (!missing(package)) 
+        if (is.name(y <- substitute(package))) 
+            package <- as.character(y)
+    if (missing(topic)) {
+        if (!is.null(package)) {
+            help_type <- if (!length(help_type)) 
+                "text"
+            else match.arg(tolower(help_type), types)
+            if (interactive() && help_type == "html") {
+                port <- tools::startDynamicHelp(NA)
+                if (port <= 0L) 
+                  return(library(help = package, lib.loc = lib.loc, 
+                    character.only = TRUE))
+                browser <- if (.Platform$GUI == "AQUA") {
+                  get("aqua.browser", envir = as.environment("tools:RGUI"))
+                }
+                else getOption("browser")
+                browseURL(paste0("http://127.0.0.1:", port, "/library/", 
+                  package, "/html/00Index.html"), browser)
+                return(invisible())
+            }
+            else return(library(help = package, lib.loc = lib.loc, 
+                character.only = TRUE))
+        }
+        if (!is.null(lib.loc)) 
+            return(library(lib.loc = lib.loc))
+        topic <- "help"
+        package <- "utils"
+        lib.loc <- .Library
+    }
+    ischar <- tryCatch(is.character(topic) && length(topic) == 
+        1L, error = identity)
+    if (inherits(ischar, "error")) 
+        ischar <- FALSE
+    if (!ischar) {
+        reserved <- c("TRUE", "FALSE", "NULL", "Inf", "NaN", 
+            "NA", "NA_integer_", "NA_real_", "NA_complex_", "NA_character_")
+        stopic <- deparse(substitute(topic))
+        if (!is.name(substitute(topic)) && !stopic %in% reserved) 
+            stop("'topic' should be a name, length-one character vector or reserved word")
+        topic <- stopic
+    }
+    help_type <- if (!length(help_type)) 
+        "text"
+    else match.arg(tolower(help_type), types)
+    paths <- index.search(topic, find.package(if (is.null(package)) 
+        loadedNamespaces()
+    else package, lib.loc, verbose = verbose))
+    tried_all_packages <- FALSE
+    if (!length(paths) && is.logical(try.all.packages) && !is.na(try.all.packages) && 
+        try.all.packages && is.null(package) && is.null(lib.loc)) {
+        for (lib in .libPaths()) {
+            packages <- .packages(TRUE, lib)
+            packages <- packages[is.na(match(packages, .packages()))]
+            paths <- c(paths, index.search(topic, file.path(lib, 
+                packages)))
+        }
+        paths <- paths[nzchar(paths)]
+        tried_all_packages <- TRUE
+    }
+    paths <- unique(paths)
+    attributes(paths) <- list(call = match.call(), topic = topic, 
+        tried_all_packages = tried_all_packages, type = help_type)
+    class(paths) <- "help_files_with_topic"
+    paths
+}
+<bytecode: 0x7fe861b6c378>
+<environment: namespace:utils>
+> getwd()
+[1] "/Users/maryam"
+> dir()
+[1] "R programming - summary.docx"
+> getwd()
+[1] "/Users/maryam/Documents/coursera-2015 October/R programming-coursera/all R codes"
+> myfunction <- function(x) {
++ 	y <- rnorm(100)
++ 	mean(y)
++ }
+> ls()
+[1] "myfunction"
+> myfunction()
+[1] -0.01013872
+> dir
+function (path = ".", pattern = NULL, all.files = FALSE, full.names = FALSE, 
+    recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, 
+    no.. = FALSE) 
+.Internal(list.files(path, pattern, all.files, full.names, recursive, 
+    ignore.case, include.dirs, no..))
+<bytecode: 0x7fe861e16200>
+<environment: namespace:base>
+> dir()
+[1] "myfunction.R"
+> myfunction()
+[1] 0.08143785
+> x <- 1
+> print(x)
+[1] 1
+> x
+[1] 1
+> msg <- "hello"
+> msg
+[1] "hello"
+> y <-
++ 
++ 
+> x <-
++ 
++ 
++ 
+> x <- ## incomplete 
++ 1
+> x
+[1] 1
+> y <- [1 2 3]
+Error: unexpected '[' in "y <- ["
+> y <- 1, 2, 3
+Error: unexpected ',' in "y <- 1,"
+> x <- 1:20
+> x
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+> x <- c(0.5, 0.6)
+> x
+[1] 0.5 0.6
+> x <- c(TRUE, FALSE)
+> x
+[1]  TRUE FALSE
+> x <- c(T, F)
+> x
+[1]  TRUE FALSE
+> x <- c(1+0i, 2+4i)
+> x
+[1] 1+0i 2+4i
+> x <- vector("numeric", length=10)
+> x
+ [1] 0 0 0 0 0 0 0 0 0 0
+> y <- c(1.7, "a")
+> y
+[1] "1.7" "a"  
+> y <- c(T, 2)
+> y
+[1] 1 2
+> y <- c("a", TRUE)
+> y
+[1] "a"    "TRUE"
+> x <- 0:6
+> x
+[1] 0 1 2 3 4 5 6
+> class(x)
+[1] "integer"
+> as.numeric(x)
+[1] 0 1 2 3 4 5 6
+> class(x)
+[1] "integer"
+> as.logical(x)
+[1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+> class(x)
+[1] "integer"
+> as.character(x)
+[1] "0" "1" "2" "3" "4" "5" "6"
+> m <- matrix(nrow = 2, ncol = 3)
+> m
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+> dim(m)
+[1] 2 3
+> attributes(m)
+$dim
+[1] 2 3
+
+> factor(c("yes", "yes", "no", "yes"))
+[1] yes yes no  yes
+Levels: no yes
+> x <- factor(c("yes", "yes", "no", "yes"))
+> x
+[1] yes yes no  yes
+Levels: no yes
+> table(x)
+x
+ no yes 
+  1   3 
+> unclass(x)
+[1] 2 2 1 2
+attr(,"levels")
+[1] "no"  "yes"
+> attributes(x)
+$levels
+[1] "no"  "yes"
+
+$class
+[1] "factor"
+
+> x <- factor(c("yes", "yes", "no", "yes", "no"), levels = c("yes", "no"))
+> x
+[1] yes yes no  yes no 
+Levels: yes no
+> attributes(x)
+$levels
+[1] "yes" "no" 
+
+$class
+[1] "factor"
+
+> x <- c(1, 2, NA, 10, 3)
+> x
+[1]  1  2 NA 10  3
+> is.na(x)
+[1] FALSE FALSE  TRUE FALSE FALSE
+> is.nan(x)
+[1] FALSE FALSE FALSE FALSE FALSE
+> x <- c(1,2,NaN, 3, NA)
+> x
+[1]   1   2 NaN   3  NA
+> is.na(x)
+[1] FALSE FALSE  TRUE FALSE  TRUE
+> is.nan(x)
+[1] FALSE FALSE  TRUE FALSE FALSE
+> x <- data.frame(foo = 1:4, bar = c(T,T,F,F))
+> x
+  foo   bar
+1   1  TRUE
+2   2  TRUE
+3   3 FALSE
+4   4 FALSE
+> nrow(x)
+[1] 4
+> ncol(x)
+[1] 2
+> row.name(x)
+Error: could not find function "row.name"
+> row.names(x)
+[1] "1" "2" "3" "4"
+> x <- 1:3
+> x
+[1] 1 2 3
+> names(x)
+NULL
+> names(x) <- c("foo", "bar", "jh")
+> x
+foo bar  jh 
+  1   2   3 
+> names(x)
+[1] "foo" "bar" "jh" 
+> x <- 1:4
+> names(x) <- c("foo1", "bar2", "jh3")
+> names(x)
+[1] "foo1" "bar2" "jh3"  NA    
+> x
+foo1 bar2  jh3 <NA> 
+   1    2    3    4 
+> x <- list(a =1, b=2, c=3)
+> x
+$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 3
+
+> m <- matrix(1:4, nrow=2, ncol=2)
+> m
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+> dimnames(m) <- list(c("a", "b"), c("c", "d"))
+> m
+  c d
+a 1 3
+b 2 4
+> y <- c("a", "b"), c("c", "d")
+Error: unexpected ',' in "y <- c("a", "b"),"
+> y <- list(c("a", "b"), c("c", "d"))
+> y
+[[1]]
+[1] "a" "b"
+
+[[2]]
+[1] "c" "d"
+
+> y <- data.frame(a=1, b ="a")
+> y
+  a b
+1 1 a
+> dput(y)
+structure(list(a = 1, b = structure(1L, .Label = "a", class = "factor")), .Names = c("a", 
+"b"), row.names = c(NA, -1L), class = "data.frame")
+> dput(y, file="y.R")
+> y
+  a b
+1 1 a
+> new.y <- dget("y.R")
+> new.y
+  a b
+1 1 a
+> x <- "foo"
+> y <- data.frame(a=1, b="a")
+> dump(c("x", "y"), file="data.R")
+> x
+[1] "foo"
+> y
+  a b
+1 1 a
+> rm(x,y)
+> x
+Error: object 'x' not found
+> y
+Error: object 'y' not found
+> source(data.R)
+Error in source(data.R) : object 'data.R' not found
+> source("data.R")
+> x
+[1] "foo"
+> y
+  a b
+1 1 a
+> str(file)
+function (description = "", open = "", blocking = TRUE, encoding = getOption("encoding"), 
+    raw = FALSE)  
+> str(source)
+function (file, local = FALSE, echo = verbose, print.eval = echo, verbose = getOption("verbose"), 
+    prompt.echo = getOption("prompt"), max.deparse.length = 150, chdir = FALSE, 
+    encoding = getOption("encoding"), continue.echo = getOption("continue"), 
+    skip.echo = 0, keep.source = getOption("keep.source"))  
+> x <- c("a", "b", "c", "c", "d", "a")
+> x[1]
+[1] "a"
+> x[2]
+[1] "b"
+> x[1,2]
+Error in x[1, 2] : incorrect number of dimensions
+> x[1:2]
+[1] "a" "b"
+> x[1:4]
+[1] "a" "b" "c" "c"
+> x[x>"a"]
+[1] "b" "c" "c" "d"
+> u <- x>"a"
+> u
+[1] FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+> u <- x[x>"a"]
+> u
+[1] "b" "c" "c" "d"
+> u <- x>"a"
+> u <- x>"a"
+> u
+[1] FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+> x[u]
+[1] "b" "c" "c" "d"
+> x <- list(foo=1:4 , bar=0.6)
+> x
+$foo
+[1] 1 2 3 4
+
+$bar
+[1] 0.6
+
+> x[1]
+$foo
+[1] 1 2 3 4
+
+> x[2]
+$bar
+[1] 0.6
+
+> x[[1]]
+[1] 1 2 3 4
+> x[1][1]
+$foo
+[1] 1 2 3 4
+
+> [x[1]]
+Error: unexpected '[' in "["
+> x$bar
+[1] 0.6
+> x$foo
+[1] 1 2 3 4
+> x$foo[1]
+[1] 1
+> x$foo[2]
+[1] 2
+> class(x)
+[1] "list"
+> class(x[1])
+[1] "list"
+> class(x[[1]])
+[1] "integer"
+> class(x$bar)
+[1] "numeric"
+> class(x$foo)
+[1] "integer"
+> class(x$foo[1])
+[1] "integer"
+> x[[foo]]
+Error: object 'foo' not found
+> x[["foo"]]
+[1] 1 2 3 4
+> x[[1]][[1]]
+[1] 1
+> x <- list(aardvark = 1:5)
+> x
+$aardvark
+[1] 1 2 3 4 5
+
+> x$a
+[1] 1 2 3 4 5
+> x[["a"]]
+NULL
+> x[["aardvark"]]
+[1] 1 2 3 4 5
+> x <- list(aardvark = 1:5, aardvark2 = 6:10)
+> x
+$aardvark
+[1] 1 2 3 4 5
+
+$aardvark2
+[1]  6  7  8  9 10
+
+> x[["aardvark"]]
+[1] 1 2 3 4 5
+> x[["a"]]
+NULL
+> x$a
+NULL
+> x[["a"]]
+NULL
+> x[["a", exact=FALSE]]
+NULL
+> x <- c(1,2,NA,4, NA, 5)
+> y <- c("a", "b", NA, "d", NA, "f")
+> good <- is.na(x)
+> good
+[1] FALSE FALSE  TRUE FALSE  TRUE FALSE
+> good <- complete.cases(x,y)
+> good
+[1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+> y <- c("a", "b", NA, "d", NA, "f")
+> x <- c(1,NA,2,4, NA, 5)
+> x
+[1]  1 NA  2  4 NA  5
+> good <- complete.cases(x,y)
+> good
+[1]  TRUE FALSE FALSE  TRUE FALSE  TRUE
+> t < -4L
+Error in t < -4L : 
+  comparison (3) is possible only for atomic and list types
+> t<-4L
+> class(t)
+[1] "integer"
+> x<-c(4,TRUE)
+> x
+[1] 4 1
+> class(x)
+[1] "numeric"
+> x <- c(1,3,5)
+> x
+[1] 1 3 5
+> y <- c(3,2,10)
+> y
+[1]  3  2 10
+> rbind(x,y)
+  [,1] [,2] [,3]
+x    1    3    5
+y    3    2   10
+> z <- rbind(x,y)
+> dim(z)
+[1] 2 3
+> m <- list(2, "a", "b", TRUE)
+> m
+[[1]]
+[1] 2
+
+[[2]]
+[1] "a"
+
+[[3]]
+[1] "b"
+
+[[4]]
+[1] TRUE
+
+> x[[1]]
+[1] 1
+> x[1]
+[1] 1
+> m[1]
+[[1]]
+[1] 2
+
+> m[[1]]
+[1] 2
+> class(m[1])
+[1] "list"
+> class(m[[1]])
+[1] "numeric"
+> x <- 1:4
+> y <- 2
+> x
+[1] 1 2 3 4
+> x+y
+[1] 3 4 5 6
+> class(x+y)
+[1] "numeric"
+> x <- c(3,5,1,10,12,6)
+> x
+[1]  3  5  1 10 12  6
+> y <-x
+> y
+[1]  3  5  1 10 12  6
+> y[y %in% 1:5] <- 0
+> y
+[1]  0  0  0 10 12  6
+> hw1data <- read.csv("hw1_data.csv")
+> class(hw1data)
+[1] "data.frame"
+> nrow(hw1data)
+[1] 153
+> ncol(hw1data)
+[1] 6
+> row.names()
+Error in row.names.default() : argument "x" is missing, with no default
+> row.names(hw1data)
+  [1] "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"   "9"   "10"  "11"  "12" 
+ [13] "13"  "14"  "15"  "16"  "17"  "18"  "19"  "20"  "21"  "22"  "23"  "24" 
+ [25] "25"  "26"  "27"  "28"  "29"  "30"  "31"  "32"  "33"  "34"  "35"  "36" 
+ [37] "37"  "38"  "39"  "40"  "41"  "42"  "43"  "44"  "45"  "46"  "47"  "48" 
+ [49] "49"  "50"  "51"  "52"  "53"  "54"  "55"  "56"  "57"  "58"  "59"  "60" 
+ [61] "61"  "62"  "63"  "64"  "65"  "66"  "67"  "68"  "69"  "70"  "71"  "72" 
+ [73] "73"  "74"  "75"  "76"  "77"  "78"  "79"  "80"  "81"  "82"  "83"  "84" 
+ [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
+ [97] "97"  "98"  "99"  "100" "101" "102" "103" "104" "105" "106" "107" "108"
+[109] "109" "110" "111" "112" "113" "114" "115" "116" "117" "118" "119" "120"
+[121] "121" "122" "123" "124" "125" "126" "127" "128" "129" "130" "131" "132"
+[133] "133" "134" "135" "136" "137" "138" "139" "140" "141" "142" "143" "144"
+[145] "145" "146" "147" "148" "149" "150" "151" "152" "153"
+> names(hw1data)
+[1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"    
+> hw1data[2,]
+  Ozone Solar.R Wind Temp Month Day
+2    36     118    8   72     5   2
+> hw1data[1,]
+  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+> hw1data[153,]
+    Ozone Solar.R Wind Temp Month Day
+153    20     223 11.5   68     9  30
+> hw1data[152,]
+    Ozone Solar.R Wind Temp Month Day
+152    18     131    8   76     9  29
+> hw1data[47,]
+   Ozone Solar.R Wind Temp Month Day
+47    21     191 14.9   77     6  16
+> hw1data[0,]
+[1] Ozone   Solar.R Wind    Temp    Month   Day    
+<0 rows> (or 0-length row.names)
+> hw1data[,1]
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20
+> pp <- is.na(hw1data)
+> pp[,1]
+  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+ [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [25]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [37]  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+ [49] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+ [73] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+ [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [97] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[109] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[145] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+> nrow(pp[,1])
+NULL
+> ncol(pp[,1])
+NULL
+> class(pp[,1])
+[1] "logical"
+> nrow(pp)
+[1] 153
+> ncol(pp)
+[1] 6
+> jcol2 <- hw1data[,1]
+> jcol2 
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20
+> nrow(jcol2)
+NULL
+> class(jcol2)
+[1] "integer"
+> is.na(jcol2)
+  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+ [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [25]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [37]  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+ [49] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+ [73] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+ [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [97] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[109] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[145] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+> p <- is.na(jcol2)
+> p
+  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+ [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [25]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [37]  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+ [49] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+ [73] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+ [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [97] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[109] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
+[121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[145] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+> pp <- c(p,1)
+> pp
+  [1] 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1 1 1
+ [38] 0 1 0 0 1 1 0 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 0 0 0 1 0 0 0 0 0 0 1 0 0
+ [75] 1 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0
+[112] 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[149] 0 1 0 0 0 1
+> sum(pp)
+[1] 38
+> h1 <- c(hw1data[,1])
+> h1
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20
+> class(h1)
+[1] "integer"
+> nrow(h1)
+NULL
+> class(hw1data)
+[1] "data.frame"
+> matrixhw <- data.matrix(hw1data)
+> matrixhw
+       Ozone Solar.R Wind Temp Month Day
+  [1,]    41     190  7.4   67     5   1
+  [2,]    36     118  8.0   72     5   2
+  [3,]    12     149 12.6   74     5   3
+  [4,]    18     313 11.5   62     5   4
+  [5,]    NA      NA 14.3   56     5   5
+  [6,]    28      NA 14.9   66     5   6
+  [7,]    23     299  8.6   65     5   7
+  [8,]    19      99 13.8   59     5   8
+  [9,]     8      19 20.1   61     5   9
+ [10,]    NA     194  8.6   69     5  10
+ [11,]     7      NA  6.9   74     5  11
+ [12,]    16     256  9.7   69     5  12
+ [13,]    11     290  9.2   66     5  13
+ [14,]    14     274 10.9   68     5  14
+ [15,]    18      65 13.2   58     5  15
+ [16,]    14     334 11.5   64     5  16
+ [17,]    34     307 12.0   66     5  17
+ [18,]     6      78 18.4   57     5  18
+ [19,]    30     322 11.5   68     5  19
+ [20,]    11      44  9.7   62     5  20
+ [21,]     1       8  9.7   59     5  21
+ [22,]    11     320 16.6   73     5  22
+ [23,]     4      25  9.7   61     5  23
+ [24,]    32      92 12.0   61     5  24
+ [25,]    NA      66 16.6   57     5  25
+ [26,]    NA     266 14.9   58     5  26
+ [27,]    NA      NA  8.0   57     5  27
+ [28,]    23      13 12.0   67     5  28
+ [29,]    45     252 14.9   81     5  29
+ [30,]   115     223  5.7   79     5  30
+ [31,]    37     279  7.4   76     5  31
+ [32,]    NA     286  8.6   78     6   1
+ [33,]    NA     287  9.7   74     6   2
+ [34,]    NA     242 16.1   67     6   3
+ [35,]    NA     186  9.2   84     6   4
+ [36,]    NA     220  8.6   85     6   5
+ [37,]    NA     264 14.3   79     6   6
+ [38,]    29     127  9.7   82     6   7
+ [39,]    NA     273  6.9   87     6   8
+ [40,]    71     291 13.8   90     6   9
+ [41,]    39     323 11.5   87     6  10
+ [42,]    NA     259 10.9   93     6  11
+ [43,]    NA     250  9.2   92     6  12
+ [44,]    23     148  8.0   82     6  13
+ [45,]    NA     332 13.8   80     6  14
+ [46,]    NA     322 11.5   79     6  15
+ [47,]    21     191 14.9   77     6  16
+ [48,]    37     284 20.7   72     6  17
+ [49,]    20      37  9.2   65     6  18
+ [50,]    12     120 11.5   73     6  19
+ [51,]    13     137 10.3   76     6  20
+ [52,]    NA     150  6.3   77     6  21
+ [53,]    NA      59  1.7   76     6  22
+ [54,]    NA      91  4.6   76     6  23
+ [55,]    NA     250  6.3   76     6  24
+ [56,]    NA     135  8.0   75     6  25
+ [57,]    NA     127  8.0   78     6  26
+ [58,]    NA      47 10.3   73     6  27
+ [59,]    NA      98 11.5   80     6  28
+ [60,]    NA      31 14.9   77     6  29
+ [61,]    NA     138  8.0   83     6  30
+ [62,]   135     269  4.1   84     7   1
+ [63,]    49     248  9.2   85     7   2
+ [64,]    32     236  9.2   81     7   3
+ [65,]    NA     101 10.9   84     7   4
+ [66,]    64     175  4.6   83     7   5
+ [67,]    40     314 10.9   83     7   6
+ [68,]    77     276  5.1   88     7   7
+ [69,]    97     267  6.3   92     7   8
+ [70,]    97     272  5.7   92     7   9
+ [71,]    85     175  7.4   89     7  10
+ [72,]    NA     139  8.6   82     7  11
+ [73,]    10     264 14.3   73     7  12
+ [74,]    27     175 14.9   81     7  13
+ [75,]    NA     291 14.9   91     7  14
+ [76,]     7      48 14.3   80     7  15
+ [77,]    48     260  6.9   81     7  16
+ [78,]    35     274 10.3   82     7  17
+ [79,]    61     285  6.3   84     7  18
+ [80,]    79     187  5.1   87     7  19
+ [81,]    63     220 11.5   85     7  20
+ [82,]    16       7  6.9   74     7  21
+ [83,]    NA     258  9.7   81     7  22
+ [84,]    NA     295 11.5   82     7  23
+ [85,]    80     294  8.6   86     7  24
+ [86,]   108     223  8.0   85     7  25
+ [87,]    20      81  8.6   82     7  26
+ [88,]    52      82 12.0   86     7  27
+ [89,]    82     213  7.4   88     7  28
+ [90,]    50     275  7.4   86     7  29
+ [91,]    64     253  7.4   83     7  30
+ [92,]    59     254  9.2   81     7  31
+ [93,]    39      83  6.9   81     8   1
+ [94,]     9      24 13.8   81     8   2
+ [95,]    16      77  7.4   82     8   3
+ [96,]    78      NA  6.9   86     8   4
+ [97,]    35      NA  7.4   85     8   5
+ [98,]    66      NA  4.6   87     8   6
+ [99,]   122     255  4.0   89     8   7
+[100,]    89     229 10.3   90     8   8
+[101,]   110     207  8.0   90     8   9
+[102,]    NA     222  8.6   92     8  10
+[103,]    NA     137 11.5   86     8  11
+[104,]    44     192 11.5   86     8  12
+[105,]    28     273 11.5   82     8  13
+[106,]    65     157  9.7   80     8  14
+[107,]    NA      64 11.5   79     8  15
+[108,]    22      71 10.3   77     8  16
+[109,]    59      51  6.3   79     8  17
+[110,]    23     115  7.4   76     8  18
+[111,]    31     244 10.9   78     8  19
+[112,]    44     190 10.3   78     8  20
+[113,]    21     259 15.5   77     8  21
+[114,]     9      36 14.3   72     8  22
+[115,]    NA     255 12.6   75     8  23
+[116,]    45     212  9.7   79     8  24
+[117,]   168     238  3.4   81     8  25
+[118,]    73     215  8.0   86     8  26
+[119,]    NA     153  5.7   88     8  27
+[120,]    76     203  9.7   97     8  28
+[121,]   118     225  2.3   94     8  29
+[122,]    84     237  6.3   96     8  30
+[123,]    85     188  6.3   94     8  31
+[124,]    96     167  6.9   91     9   1
+[125,]    78     197  5.1   92     9   2
+[126,]    73     183  2.8   93     9   3
+[127,]    91     189  4.6   93     9   4
+[128,]    47      95  7.4   87     9   5
+[129,]    32      92 15.5   84     9   6
+[130,]    20     252 10.9   80     9   7
+[131,]    23     220 10.3   78     9   8
+[132,]    21     230 10.9   75     9   9
+[133,]    24     259  9.7   73     9  10
+[134,]    44     236 14.9   81     9  11
+[135,]    21     259 15.5   76     9  12
+[136,]    28     238  6.3   77     9  13
+[137,]     9      24 10.9   71     9  14
+[138,]    13     112 11.5   71     9  15
+[139,]    46     237  6.9   78     9  16
+[140,]    18     224 13.8   67     9  17
+[141,]    13      27 10.3   76     9  18
+[142,]    24     238 10.3   68     9  19
+[143,]    16     201  8.0   82     9  20
+[144,]    13     238 12.6   64     9  21
+[145,]    23      14  9.2   71     9  22
+[146,]    36     139 10.3   81     9  23
+[147,]     7      49 10.3   69     9  24
+[148,]    14      20 16.6   63     9  25
+[149,]    30     193  6.9   70     9  26
+[150,]    NA     145 13.2   77     9  27
+[151,]    14     191 14.3   75     9  28
+[152,]    18     131  8.0   76     9  29
+[153,]    20     223 11.5   68     9  30
+> class(matrixhw)
+[1] "matrix"
+> nrow(matrixhw)
+[1] 153
+> ncol(matrixhw)
+[1] 6
+> jcol2m <- matrixhw[,1]
+> jcol2m
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20
+> class(jcol2m)
+[1] "numeric"
+> jcol2mf <- matrixhw[,1, drop=FALSE]
+> jcol2mf
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> class(jcol2mf)
+[1] "matrix"
+> nrow(jcol2mf)
+[1] 153
+> ncol(jcol2mf)
+[1] 1
+> bad <-is.na(jcol2mf)
+> bad
+       Ozone
+  [1,] FALSE
+  [2,] FALSE
+  [3,] FALSE
+  [4,] FALSE
+  [5,]  TRUE
+  [6,] FALSE
+  [7,] FALSE
+  [8,] FALSE
+  [9,] FALSE
+ [10,]  TRUE
+ [11,] FALSE
+ [12,] FALSE
+ [13,] FALSE
+ [14,] FALSE
+ [15,] FALSE
+ [16,] FALSE
+ [17,] FALSE
+ [18,] FALSE
+ [19,] FALSE
+ [20,] FALSE
+ [21,] FALSE
+ [22,] FALSE
+ [23,] FALSE
+ [24,] FALSE
+ [25,]  TRUE
+ [26,]  TRUE
+ [27,]  TRUE
+ [28,] FALSE
+ [29,] FALSE
+ [30,] FALSE
+ [31,] FALSE
+ [32,]  TRUE
+ [33,]  TRUE
+ [34,]  TRUE
+ [35,]  TRUE
+ [36,]  TRUE
+ [37,]  TRUE
+ [38,] FALSE
+ [39,]  TRUE
+ [40,] FALSE
+ [41,] FALSE
+ [42,]  TRUE
+ [43,]  TRUE
+ [44,] FALSE
+ [45,]  TRUE
+ [46,]  TRUE
+ [47,] FALSE
+ [48,] FALSE
+ [49,] FALSE
+ [50,] FALSE
+ [51,] FALSE
+ [52,]  TRUE
+ [53,]  TRUE
+ [54,]  TRUE
+ [55,]  TRUE
+ [56,]  TRUE
+ [57,]  TRUE
+ [58,]  TRUE
+ [59,]  TRUE
+ [60,]  TRUE
+ [61,]  TRUE
+ [62,] FALSE
+ [63,] FALSE
+ [64,] FALSE
+ [65,]  TRUE
+ [66,] FALSE
+ [67,] FALSE
+ [68,] FALSE
+ [69,] FALSE
+ [70,] FALSE
+ [71,] FALSE
+ [72,]  TRUE
+ [73,] FALSE
+ [74,] FALSE
+ [75,]  TRUE
+ [76,] FALSE
+ [77,] FALSE
+ [78,] FALSE
+ [79,] FALSE
+ [80,] FALSE
+ [81,] FALSE
+ [82,] FALSE
+ [83,]  TRUE
+ [84,]  TRUE
+ [85,] FALSE
+ [86,] FALSE
+ [87,] FALSE
+ [88,] FALSE
+ [89,] FALSE
+ [90,] FALSE
+ [91,] FALSE
+ [92,] FALSE
+ [93,] FALSE
+ [94,] FALSE
+ [95,] FALSE
+ [96,] FALSE
+ [97,] FALSE
+ [98,] FALSE
+ [99,] FALSE
+[100,] FALSE
+[101,] FALSE
+[102,]  TRUE
+[103,]  TRUE
+[104,] FALSE
+[105,] FALSE
+[106,] FALSE
+[107,]  TRUE
+[108,] FALSE
+[109,] FALSE
+[110,] FALSE
+[111,] FALSE
+[112,] FALSE
+[113,] FALSE
+[114,] FALSE
+[115,]  TRUE
+[116,] FALSE
+[117,] FALSE
+[118,] FALSE
+[119,]  TRUE
+[120,] FALSE
+[121,] FALSE
+[122,] FALSE
+[123,] FALSE
+[124,] FALSE
+[125,] FALSE
+[126,] FALSE
+[127,] FALSE
+[128,] FALSE
+[129,] FALSE
+[130,] FALSE
+[131,] FALSE
+[132,] FALSE
+[133,] FALSE
+[134,] FALSE
+[135,] FALSE
+[136,] FALSE
+[137,] FALSE
+[138,] FALSE
+[139,] FALSE
+[140,] FALSE
+[141,] FALSE
+[142,] FALSE
+[143,] FALSE
+[144,] FALSE
+[145,] FALSE
+[146,] FALSE
+[147,] FALSE
+[148,] FALSE
+[149,] FALSE
+[150,]  TRUE
+[151,] FALSE
+[152,] FALSE
+[153,] FALSE
+> arebad <- jcol2mf[bad]
+> nrow(arebad)
+NULL
+> arebad <- jcol2mf[bad, drop=FALSE]
+> nrow(arebad)
+NULL
+> class(arebad)
+[1] "numeric"
+> arebad
+ [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[26] NA NA NA NA NA NA NA NA NA NA NA NA
+> jcol2mf
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> jcol2mf[bad]
+ [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[26] NA NA NA NA NA NA NA NA NA NA NA NA
+> jcol2mf[!bad]
+  [1]  41  36  12  18  28  23  19   8   7  16  11  14  18  14  34   6  30  11
+ [19]   1  11   4  32  23  45 115  37  29  71  39  23  21  37  20  12  13 135
+ [37]  49  32  64  40  77  97  97  85  10  27   7  48  35  61  79  63  16  80
+ [55] 108  20  52  82  50  64  59  39   9  16  78  35  66 122  89 110  44  28
+ [73]  65  22  59  23  31  44  21   9  45 168  73  76 118  84  85  96  78  73
+ [91]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[109]  23  36   7  14  30  14  18  20
+> length(jcol2mf[bad])
+[1] 37
+> justNum <- jcol2mf[!bad]
+> justNum 
+  [1]  41  36  12  18  28  23  19   8   7  16  11  14  18  14  34   6  30  11
+ [19]   1  11   4  32  23  45 115  37  29  71  39  23  21  37  20  12  13 135
+ [37]  49  32  64  40  77  97  97  85  10  27   7  48  35  61  79  63  16  80
+ [55] 108  20  52  82  50  64  59  39   9  16  78  35  66 122  89 110  44  28
+ [73]  65  22  59  23  31  44  21   9  45 168  73  76 118  84  85  96  78  73
+ [91]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[109]  23  36   7  14  30  14  18  20
+> mean(justNum)
+[1] 42.12931
+> matrixhw
+       Ozone Solar.R Wind Temp Month Day
+  [1,]    41     190  7.4   67     5   1
+  [2,]    36     118  8.0   72     5   2
+  [3,]    12     149 12.6   74     5   3
+  [4,]    18     313 11.5   62     5   4
+  [5,]    NA      NA 14.3   56     5   5
+  [6,]    28      NA 14.9   66     5   6
+  [7,]    23     299  8.6   65     5   7
+  [8,]    19      99 13.8   59     5   8
+  [9,]     8      19 20.1   61     5   9
+ [10,]    NA     194  8.6   69     5  10
+ [11,]     7      NA  6.9   74     5  11
+ [12,]    16     256  9.7   69     5  12
+ [13,]    11     290  9.2   66     5  13
+ [14,]    14     274 10.9   68     5  14
+ [15,]    18      65 13.2   58     5  15
+ [16,]    14     334 11.5   64     5  16
+ [17,]    34     307 12.0   66     5  17
+ [18,]     6      78 18.4   57     5  18
+ [19,]    30     322 11.5   68     5  19
+ [20,]    11      44  9.7   62     5  20
+ [21,]     1       8  9.7   59     5  21
+ [22,]    11     320 16.6   73     5  22
+ [23,]     4      25  9.7   61     5  23
+ [24,]    32      92 12.0   61     5  24
+ [25,]    NA      66 16.6   57     5  25
+ [26,]    NA     266 14.9   58     5  26
+ [27,]    NA      NA  8.0   57     5  27
+ [28,]    23      13 12.0   67     5  28
+ [29,]    45     252 14.9   81     5  29
+ [30,]   115     223  5.7   79     5  30
+ [31,]    37     279  7.4   76     5  31
+ [32,]    NA     286  8.6   78     6   1
+ [33,]    NA     287  9.7   74     6   2
+ [34,]    NA     242 16.1   67     6   3
+ [35,]    NA     186  9.2   84     6   4
+ [36,]    NA     220  8.6   85     6   5
+ [37,]    NA     264 14.3   79     6   6
+ [38,]    29     127  9.7   82     6   7
+ [39,]    NA     273  6.9   87     6   8
+ [40,]    71     291 13.8   90     6   9
+ [41,]    39     323 11.5   87     6  10
+ [42,]    NA     259 10.9   93     6  11
+ [43,]    NA     250  9.2   92     6  12
+ [44,]    23     148  8.0   82     6  13
+ [45,]    NA     332 13.8   80     6  14
+ [46,]    NA     322 11.5   79     6  15
+ [47,]    21     191 14.9   77     6  16
+ [48,]    37     284 20.7   72     6  17
+ [49,]    20      37  9.2   65     6  18
+ [50,]    12     120 11.5   73     6  19
+ [51,]    13     137 10.3   76     6  20
+ [52,]    NA     150  6.3   77     6  21
+ [53,]    NA      59  1.7   76     6  22
+ [54,]    NA      91  4.6   76     6  23
+ [55,]    NA     250  6.3   76     6  24
+ [56,]    NA     135  8.0   75     6  25
+ [57,]    NA     127  8.0   78     6  26
+ [58,]    NA      47 10.3   73     6  27
+ [59,]    NA      98 11.5   80     6  28
+ [60,]    NA      31 14.9   77     6  29
+ [61,]    NA     138  8.0   83     6  30
+ [62,]   135     269  4.1   84     7   1
+ [63,]    49     248  9.2   85     7   2
+ [64,]    32     236  9.2   81     7   3
+ [65,]    NA     101 10.9   84     7   4
+ [66,]    64     175  4.6   83     7   5
+ [67,]    40     314 10.9   83     7   6
+ [68,]    77     276  5.1   88     7   7
+ [69,]    97     267  6.3   92     7   8
+ [70,]    97     272  5.7   92     7   9
+ [71,]    85     175  7.4   89     7  10
+ [72,]    NA     139  8.6   82     7  11
+ [73,]    10     264 14.3   73     7  12
+ [74,]    27     175 14.9   81     7  13
+ [75,]    NA     291 14.9   91     7  14
+ [76,]     7      48 14.3   80     7  15
+ [77,]    48     260  6.9   81     7  16
+ [78,]    35     274 10.3   82     7  17
+ [79,]    61     285  6.3   84     7  18
+ [80,]    79     187  5.1   87     7  19
+ [81,]    63     220 11.5   85     7  20
+ [82,]    16       7  6.9   74     7  21
+ [83,]    NA     258  9.7   81     7  22
+ [84,]    NA     295 11.5   82     7  23
+ [85,]    80     294  8.6   86     7  24
+ [86,]   108     223  8.0   85     7  25
+ [87,]    20      81  8.6   82     7  26
+ [88,]    52      82 12.0   86     7  27
+ [89,]    82     213  7.4   88     7  28
+ [90,]    50     275  7.4   86     7  29
+ [91,]    64     253  7.4   83     7  30
+ [92,]    59     254  9.2   81     7  31
+ [93,]    39      83  6.9   81     8   1
+ [94,]     9      24 13.8   81     8   2
+ [95,]    16      77  7.4   82     8   3
+ [96,]    78      NA  6.9   86     8   4
+ [97,]    35      NA  7.4   85     8   5
+ [98,]    66      NA  4.6   87     8   6
+ [99,]   122     255  4.0   89     8   7
+[100,]    89     229 10.3   90     8   8
+[101,]   110     207  8.0   90     8   9
+[102,]    NA     222  8.6   92     8  10
+[103,]    NA     137 11.5   86     8  11
+[104,]    44     192 11.5   86     8  12
+[105,]    28     273 11.5   82     8  13
+[106,]    65     157  9.7   80     8  14
+[107,]    NA      64 11.5   79     8  15
+[108,]    22      71 10.3   77     8  16
+[109,]    59      51  6.3   79     8  17
+[110,]    23     115  7.4   76     8  18
+[111,]    31     244 10.9   78     8  19
+[112,]    44     190 10.3   78     8  20
+[113,]    21     259 15.5   77     8  21
+[114,]     9      36 14.3   72     8  22
+[115,]    NA     255 12.6   75     8  23
+[116,]    45     212  9.7   79     8  24
+[117,]   168     238  3.4   81     8  25
+[118,]    73     215  8.0   86     8  26
+[119,]    NA     153  5.7   88     8  27
+[120,]    76     203  9.7   97     8  28
+[121,]   118     225  2.3   94     8  29
+[122,]    84     237  6.3   96     8  30
+[123,]    85     188  6.3   94     8  31
+[124,]    96     167  6.9   91     9   1
+[125,]    78     197  5.1   92     9   2
+[126,]    73     183  2.8   93     9   3
+[127,]    91     189  4.6   93     9   4
+[128,]    47      95  7.4   87     9   5
+[129,]    32      92 15.5   84     9   6
+[130,]    20     252 10.9   80     9   7
+[131,]    23     220 10.3   78     9   8
+[132,]    21     230 10.9   75     9   9
+[133,]    24     259  9.7   73     9  10
+[134,]    44     236 14.9   81     9  11
+[135,]    21     259 15.5   76     9  12
+[136,]    28     238  6.3   77     9  13
+[137,]     9      24 10.9   71     9  14
+[138,]    13     112 11.5   71     9  15
+[139,]    46     237  6.9   78     9  16
+[140,]    18     224 13.8   67     9  17
+[141,]    13      27 10.3   76     9  18
+[142,]    24     238 10.3   68     9  19
+[143,]    16     201  8.0   82     9  20
+[144,]    13     238 12.6   64     9  21
+[145,]    23      14  9.2   71     9  22
+[146,]    36     139 10.3   81     9  23
+[147,]     7      49 10.3   69     9  24
+[148,]    14      20 16.6   63     9  25
+[149,]    30     193  6.9   70     9  26
+[150,]    NA     145 13.2   77     9  27
+[151,]    14     191 14.3   75     9  28
+[152,]    18     131  8.0   76     9  29
+[153,]    20     223 11.5   68     9  30
+> matrixhw[, 1,4]
+Error in matrixhw[, 1, 4] : incorrect number of dimensions
+> matrixhw[, 4]
+  [1] 67 72 74 62 56 66 65 59 61 69 74 69 66 68 58 64 66 57 68 62 59 73 61 61
+ [25] 57 58 57 67 81 79 76 78 74 67 84 85 79 82 87 90 87 93 92 82 80 79 77 72
+ [49] 65 73 76 77 76 76 76 75 78 73 80 77 83 84 85 81 84 83 83 88 92 92 89 82
+ [73] 73 81 91 80 81 82 84 87 85 74 81 82 86 85 82 86 88 86 83 81 81 81 82 86
+ [97] 85 87 89 90 90 92 86 86 82 80 79 77 79 76 78 78 77 72 75 79 81 86 88 97
+[121] 94 96 94 91 92 93 93 87 84 80 78 75 73 81 76 77 71 71 78 67 76 68 82 64
+[145] 71 81 69 63 70 77 75 76 68
+> class(matrixhw)
+[1] "matrix"
+> ozonCol <- matrixhw[,1]
+> tempCol <- matrixhw[,4]
+> both <- c(ozonCol, tempCol)
+> both
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20  67  72  74  62  56  66  65  59  61
+[163]  69  74  69  66  68  58  64  66  57  68  62  59  73  61  61  57  58  57
+[181]  67  81  79  76  78  74  67  84  85  79  82  87  90  87  93  92  82  80
+[199]  79  77  72  65  73  76  77  76  76  76  75  78  73  80  77  83  84  85
+[217]  81  84  83  83  88  92  92  89  82  73  81  91  80  81  82  84  87  85
+[235]  74  81  82  86  85  82  86  88  86  83  81  81  81  82  86  85  87  89
+[253]  90  90  92  86  86  82  80  79  77  79  76  78  78  77  72  75  79  81
+[271]  86  88  97  94  96  94  91  92  93  93  87  84  80  78  75  73  81  76
+[289]  77  71  71  78  67  76  68  82  64  71  81  69  63  70  77  75  76  68
+> class(ozonCol)
+[1] "numeric"
+> ozonCol2 <- matrixhw[, 1, drop=FALSE]
+> ozonCol2
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> tempCol2 <- matrixhw[, 4, drop=FALSE]
+> tempCol2
+       Temp
+  [1,]   67
+  [2,]   72
+  [3,]   74
+  [4,]   62
+  [5,]   56
+  [6,]   66
+  [7,]   65
+  [8,]   59
+  [9,]   61
+ [10,]   69
+ [11,]   74
+ [12,]   69
+ [13,]   66
+ [14,]   68
+ [15,]   58
+ [16,]   64
+ [17,]   66
+ [18,]   57
+ [19,]   68
+ [20,]   62
+ [21,]   59
+ [22,]   73
+ [23,]   61
+ [24,]   61
+ [25,]   57
+ [26,]   58
+ [27,]   57
+ [28,]   67
+ [29,]   81
+ [30,]   79
+ [31,]   76
+ [32,]   78
+ [33,]   74
+ [34,]   67
+ [35,]   84
+ [36,]   85
+ [37,]   79
+ [38,]   82
+ [39,]   87
+ [40,]   90
+ [41,]   87
+ [42,]   93
+ [43,]   92
+ [44,]   82
+ [45,]   80
+ [46,]   79
+ [47,]   77
+ [48,]   72
+ [49,]   65
+ [50,]   73
+ [51,]   76
+ [52,]   77
+ [53,]   76
+ [54,]   76
+ [55,]   76
+ [56,]   75
+ [57,]   78
+ [58,]   73
+ [59,]   80
+ [60,]   77
+ [61,]   83
+ [62,]   84
+ [63,]   85
+ [64,]   81
+ [65,]   84
+ [66,]   83
+ [67,]   83
+ [68,]   88
+ [69,]   92
+ [70,]   92
+ [71,]   89
+ [72,]   82
+ [73,]   73
+ [74,]   81
+ [75,]   91
+ [76,]   80
+ [77,]   81
+ [78,]   82
+ [79,]   84
+ [80,]   87
+ [81,]   85
+ [82,]   74
+ [83,]   81
+ [84,]   82
+ [85,]   86
+ [86,]   85
+ [87,]   82
+ [88,]   86
+ [89,]   88
+ [90,]   86
+ [91,]   83
+ [92,]   81
+ [93,]   81
+ [94,]   81
+ [95,]   82
+ [96,]   86
+ [97,]   85
+ [98,]   87
+ [99,]   89
+[100,]   90
+[101,]   90
+[102,]   92
+[103,]   86
+[104,]   86
+[105,]   82
+[106,]   80
+[107,]   79
+[108,]   77
+[109,]   79
+[110,]   76
+[111,]   78
+[112,]   78
+[113,]   77
+[114,]   72
+[115,]   75
+[116,]   79
+[117,]   81
+[118,]   86
+[119,]   88
+[120,]   97
+[121,]   94
+[122,]   96
+[123,]   94
+[124,]   91
+[125,]   92
+[126,]   93
+[127,]   93
+[128,]   87
+[129,]   84
+[130,]   80
+[131,]   78
+[132,]   75
+[133,]   73
+[134,]   81
+[135,]   76
+[136,]   77
+[137,]   71
+[138,]   71
+[139,]   78
+[140,]   67
+[141,]   76
+[142,]   68
+[143,]   82
+[144,]   64
+[145,]   71
+[146,]   81
+[147,]   69
+[148,]   63
+[149,]   70
+[150,]   77
+[151,]   75
+[152,]   76
+[153,]   68
+> both2 <- c(ozonCol2, tempCol2)
+> both2
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20  67  72  74  62  56  66  65  59  61
+[163]  69  74  69  66  68  58  64  66  57  68  62  59  73  61  61  57  58  57
+[181]  67  81  79  76  78  74  67  84  85  79  82  87  90  87  93  92  82  80
+[199]  79  77  72  65  73  76  77  76  76  76  75  78  73  80  77  83  84  85
+[217]  81  84  83  83  88  92  92  89  82  73  81  91  80  81  82  84  87  85
+[235]  74  81  82  86  85  82  86  88  86  83  81  81  81  82  86  85  87  89
+[253]  90  90  92  86  86  82  80  79  77  79  76  78  78  77  72  75  79  81
+[271]  86  88  97  94  96  94  91  92  93  93  87  84  80  78  75  73  81  76
+[289]  77  71  71  78  67  76  68  82  64  71  81  69  63  70  77  75  76  68
+> both3 <- c(ozonCol2, tempCol2, drop=FALSE)
+> both3
+                                                                           
+  41   36   12   18   NA   28   23   19    8   NA    7   16   11   14   18 
+                                                                           
+  14   34    6   30   11    1   11    4   32   NA   NA   NA   23   45  115 
+                                                                           
+  37   NA   NA   NA   NA   NA   NA   29   NA   71   39   NA   NA   23   NA 
+                                                                           
+  NA   21   37   20   12   13   NA   NA   NA   NA   NA   NA   NA   NA   NA 
+                                                                           
+  NA  135   49   32   NA   64   40   77   97   97   85   NA   10   27   NA 
+                                                                           
+   7   48   35   61   79   63   16   NA   NA   80  108   20   52   82   50 
+                                                                           
+  64   59   39    9   16   78   35   66  122   89  110   NA   NA   44   28 
+                                                                           
+  65   NA   22   59   23   31   44   21    9   NA   45  168   73   NA   76 
+                                                                           
+ 118   84   85   96   78   73   91   47   32   20   23   21   24   44   21 
+                                                                           
+  28    9   13   46   18   13   24   16   13   23   36    7   14   30   NA 
+                                                                           
+  14   18   20   67   72   74   62   56   66   65   59   61   69   74   69 
+                                                                           
+  66   68   58   64   66   57   68   62   59   73   61   61   57   58   57 
+                                                                           
+  67   81   79   76   78   74   67   84   85   79   82   87   90   87   93 
+                                                                           
+  92   82   80   79   77   72   65   73   76   77   76   76   76   75   78 
+                                                                           
+  73   80   77   83   84   85   81   84   83   83   88   92   92   89   82 
+                                                                           
+  73   81   91   80   81   82   84   87   85   74   81   82   86   85   82 
+                                                                           
+  86   88   86   83   81   81   81   82   86   85   87   89   90   90   92 
+                                                                           
+  86   86   82   80   79   77   79   76   78   78   77   72   75   79   81 
+                                                                           
+  86   88   97   94   96   94   91   92   93   93   87   84   80   78   75 
+                                                                           
+  73   81   76   77   71   71   78   67   76   68   82   64   71   81   69 
+                              drop 
+  63   70   77   75   76   68    0 
+> both4 <-matrix(ozonCol2, tempCol2)
+Warning message:
+In matrix(ozonCol2, tempCol2) :
+  data length [153] is not a sub-multiple or multiple of the number of rows [67]
+> both5 <-matrixhw[,c(1,4)]
+> both5
+       Ozone Temp
+  [1,]    41   67
+  [2,]    36   72
+  [3,]    12   74
+  [4,]    18   62
+  [5,]    NA   56
+  [6,]    28   66
+  [7,]    23   65
+  [8,]    19   59
+  [9,]     8   61
+ [10,]    NA   69
+ [11,]     7   74
+ [12,]    16   69
+ [13,]    11   66
+ [14,]    14   68
+ [15,]    18   58
+ [16,]    14   64
+ [17,]    34   66
+ [18,]     6   57
+ [19,]    30   68
+ [20,]    11   62
+ [21,]     1   59
+ [22,]    11   73
+ [23,]     4   61
+ [24,]    32   61
+ [25,]    NA   57
+ [26,]    NA   58
+ [27,]    NA   57
+ [28,]    23   67
+ [29,]    45   81
+ [30,]   115   79
+ [31,]    37   76
+ [32,]    NA   78
+ [33,]    NA   74
+ [34,]    NA   67
+ [35,]    NA   84
+ [36,]    NA   85
+ [37,]    NA   79
+ [38,]    29   82
+ [39,]    NA   87
+ [40,]    71   90
+ [41,]    39   87
+ [42,]    NA   93
+ [43,]    NA   92
+ [44,]    23   82
+ [45,]    NA   80
+ [46,]    NA   79
+ [47,]    21   77
+ [48,]    37   72
+ [49,]    20   65
+ [50,]    12   73
+ [51,]    13   76
+ [52,]    NA   77
+ [53,]    NA   76
+ [54,]    NA   76
+ [55,]    NA   76
+ [56,]    NA   75
+ [57,]    NA   78
+ [58,]    NA   73
+ [59,]    NA   80
+ [60,]    NA   77
+ [61,]    NA   83
+ [62,]   135   84
+ [63,]    49   85
+ [64,]    32   81
+ [65,]    NA   84
+ [66,]    64   83
+ [67,]    40   83
+ [68,]    77   88
+ [69,]    97   92
+ [70,]    97   92
+ [71,]    85   89
+ [72,]    NA   82
+ [73,]    10   73
+ [74,]    27   81
+ [75,]    NA   91
+ [76,]     7   80
+ [77,]    48   81
+ [78,]    35   82
+ [79,]    61   84
+ [80,]    79   87
+ [81,]    63   85
+ [82,]    16   74
+ [83,]    NA   81
+ [84,]    NA   82
+ [85,]    80   86
+ [86,]   108   85
+ [87,]    20   82
+ [88,]    52   86
+ [89,]    82   88
+ [90,]    50   86
+ [91,]    64   83
+ [92,]    59   81
+ [93,]    39   81
+ [94,]     9   81
+ [95,]    16   82
+ [96,]    78   86
+ [97,]    35   85
+ [98,]    66   87
+ [99,]   122   89
+[100,]    89   90
+[101,]   110   90
+[102,]    NA   92
+[103,]    NA   86
+[104,]    44   86
+[105,]    28   82
+[106,]    65   80
+[107,]    NA   79
+[108,]    22   77
+[109,]    59   79
+[110,]    23   76
+[111,]    31   78
+[112,]    44   78
+[113,]    21   77
+[114,]     9   72
+[115,]    NA   75
+[116,]    45   79
+[117,]   168   81
+[118,]    73   86
+[119,]    NA   88
+[120,]    76   97
+[121,]   118   94
+[122,]    84   96
+[123,]    85   94
+[124,]    96   91
+[125,]    78   92
+[126,]    73   93
+[127,]    91   93
+[128,]    47   87
+[129,]    32   84
+[130,]    20   80
+[131,]    23   78
+[132,]    21   75
+[133,]    24   73
+[134,]    44   81
+[135,]    21   76
+[136,]    28   77
+[137,]     9   71
+[138,]    13   71
+[139,]    46   78
+[140,]    18   67
+[141,]    13   76
+[142,]    24   68
+[143,]    16   82
+[144,]    13   64
+[145,]    23   71
+[146,]    36   81
+[147,]     7   69
+[148,]    14   63
+[149,]    30   70
+[150,]    NA   77
+[151,]    14   75
+[152,]    18   76
+[153,]    20   68
+> matrixhw
+       Ozone Solar.R Wind Temp Month Day
+  [1,]    41     190  7.4   67     5   1
+  [2,]    36     118  8.0   72     5   2
+  [3,]    12     149 12.6   74     5   3
+  [4,]    18     313 11.5   62     5   4
+  [5,]    NA      NA 14.3   56     5   5
+  [6,]    28      NA 14.9   66     5   6
+  [7,]    23     299  8.6   65     5   7
+  [8,]    19      99 13.8   59     5   8
+  [9,]     8      19 20.1   61     5   9
+ [10,]    NA     194  8.6   69     5  10
+ [11,]     7      NA  6.9   74     5  11
+ [12,]    16     256  9.7   69     5  12
+ [13,]    11     290  9.2   66     5  13
+ [14,]    14     274 10.9   68     5  14
+ [15,]    18      65 13.2   58     5  15
+ [16,]    14     334 11.5   64     5  16
+ [17,]    34     307 12.0   66     5  17
+ [18,]     6      78 18.4   57     5  18
+ [19,]    30     322 11.5   68     5  19
+ [20,]    11      44  9.7   62     5  20
+ [21,]     1       8  9.7   59     5  21
+ [22,]    11     320 16.6   73     5  22
+ [23,]     4      25  9.7   61     5  23
+ [24,]    32      92 12.0   61     5  24
+ [25,]    NA      66 16.6   57     5  25
+ [26,]    NA     266 14.9   58     5  26
+ [27,]    NA      NA  8.0   57     5  27
+ [28,]    23      13 12.0   67     5  28
+ [29,]    45     252 14.9   81     5  29
+ [30,]   115     223  5.7   79     5  30
+ [31,]    37     279  7.4   76     5  31
+ [32,]    NA     286  8.6   78     6   1
+ [33,]    NA     287  9.7   74     6   2
+ [34,]    NA     242 16.1   67     6   3
+ [35,]    NA     186  9.2   84     6   4
+ [36,]    NA     220  8.6   85     6   5
+ [37,]    NA     264 14.3   79     6   6
+ [38,]    29     127  9.7   82     6   7
+ [39,]    NA     273  6.9   87     6   8
+ [40,]    71     291 13.8   90     6   9
+ [41,]    39     323 11.5   87     6  10
+ [42,]    NA     259 10.9   93     6  11
+ [43,]    NA     250  9.2   92     6  12
+ [44,]    23     148  8.0   82     6  13
+ [45,]    NA     332 13.8   80     6  14
+ [46,]    NA     322 11.5   79     6  15
+ [47,]    21     191 14.9   77     6  16
+ [48,]    37     284 20.7   72     6  17
+ [49,]    20      37  9.2   65     6  18
+ [50,]    12     120 11.5   73     6  19
+ [51,]    13     137 10.3   76     6  20
+ [52,]    NA     150  6.3   77     6  21
+ [53,]    NA      59  1.7   76     6  22
+ [54,]    NA      91  4.6   76     6  23
+ [55,]    NA     250  6.3   76     6  24
+ [56,]    NA     135  8.0   75     6  25
+ [57,]    NA     127  8.0   78     6  26
+ [58,]    NA      47 10.3   73     6  27
+ [59,]    NA      98 11.5   80     6  28
+ [60,]    NA      31 14.9   77     6  29
+ [61,]    NA     138  8.0   83     6  30
+ [62,]   135     269  4.1   84     7   1
+ [63,]    49     248  9.2   85     7   2
+ [64,]    32     236  9.2   81     7   3
+ [65,]    NA     101 10.9   84     7   4
+ [66,]    64     175  4.6   83     7   5
+ [67,]    40     314 10.9   83     7   6
+ [68,]    77     276  5.1   88     7   7
+ [69,]    97     267  6.3   92     7   8
+ [70,]    97     272  5.7   92     7   9
+ [71,]    85     175  7.4   89     7  10
+ [72,]    NA     139  8.6   82     7  11
+ [73,]    10     264 14.3   73     7  12
+ [74,]    27     175 14.9   81     7  13
+ [75,]    NA     291 14.9   91     7  14
+ [76,]     7      48 14.3   80     7  15
+ [77,]    48     260  6.9   81     7  16
+ [78,]    35     274 10.3   82     7  17
+ [79,]    61     285  6.3   84     7  18
+ [80,]    79     187  5.1   87     7  19
+ [81,]    63     220 11.5   85     7  20
+ [82,]    16       7  6.9   74     7  21
+ [83,]    NA     258  9.7   81     7  22
+ [84,]    NA     295 11.5   82     7  23
+ [85,]    80     294  8.6   86     7  24
+ [86,]   108     223  8.0   85     7  25
+ [87,]    20      81  8.6   82     7  26
+ [88,]    52      82 12.0   86     7  27
+ [89,]    82     213  7.4   88     7  28
+ [90,]    50     275  7.4   86     7  29
+ [91,]    64     253  7.4   83     7  30
+ [92,]    59     254  9.2   81     7  31
+ [93,]    39      83  6.9   81     8   1
+ [94,]     9      24 13.8   81     8   2
+ [95,]    16      77  7.4   82     8   3
+ [96,]    78      NA  6.9   86     8   4
+ [97,]    35      NA  7.4   85     8   5
+ [98,]    66      NA  4.6   87     8   6
+ [99,]   122     255  4.0   89     8   7
+[100,]    89     229 10.3   90     8   8
+[101,]   110     207  8.0   90     8   9
+[102,]    NA     222  8.6   92     8  10
+[103,]    NA     137 11.5   86     8  11
+[104,]    44     192 11.5   86     8  12
+[105,]    28     273 11.5   82     8  13
+[106,]    65     157  9.7   80     8  14
+[107,]    NA      64 11.5   79     8  15
+[108,]    22      71 10.3   77     8  16
+[109,]    59      51  6.3   79     8  17
+[110,]    23     115  7.4   76     8  18
+[111,]    31     244 10.9   78     8  19
+[112,]    44     190 10.3   78     8  20
+[113,]    21     259 15.5   77     8  21
+[114,]     9      36 14.3   72     8  22
+[115,]    NA     255 12.6   75     8  23
+[116,]    45     212  9.7   79     8  24
+[117,]   168     238  3.4   81     8  25
+[118,]    73     215  8.0   86     8  26
+[119,]    NA     153  5.7   88     8  27
+[120,]    76     203  9.7   97     8  28
+[121,]   118     225  2.3   94     8  29
+[122,]    84     237  6.3   96     8  30
+[123,]    85     188  6.3   94     8  31
+[124,]    96     167  6.9   91     9   1
+[125,]    78     197  5.1   92     9   2
+[126,]    73     183  2.8   93     9   3
+[127,]    91     189  4.6   93     9   4
+[128,]    47      95  7.4   87     9   5
+[129,]    32      92 15.5   84     9   6
+[130,]    20     252 10.9   80     9   7
+[131,]    23     220 10.3   78     9   8
+[132,]    21     230 10.9   75     9   9
+[133,]    24     259  9.7   73     9  10
+[134,]    44     236 14.9   81     9  11
+[135,]    21     259 15.5   76     9  12
+[136,]    28     238  6.3   77     9  13
+[137,]     9      24 10.9   71     9  14
+[138,]    13     112 11.5   71     9  15
+[139,]    46     237  6.9   78     9  16
+[140,]    18     224 13.8   67     9  17
+[141,]    13      27 10.3   76     9  18
+[142,]    24     238 10.3   68     9  19
+[143,]    16     201  8.0   82     9  20
+[144,]    13     238 12.6   64     9  21
+[145,]    23      14  9.2   71     9  22
+[146,]    36     139 10.3   81     9  23
+[147,]     7      49 10.3   69     9  24
+[148,]    14      20 16.6   63     9  25
+[149,]    30     193  6.9   70     9  26
+[150,]    NA     145 13.2   77     9  27
+[151,]    14     191 14.3   75     9  28
+[152,]    18     131  8.0   76     9  29
+[153,]    20     223 11.5   68     9  30
+> justOzone <-matrixhw[,c(1)]
+> justOzone
+  [1]  41  36  12  18  NA  28  23  19   8  NA   7  16  11  14  18  14  34   6
+ [19]  30  11   1  11   4  32  NA  NA  NA  23  45 115  37  NA  NA  NA  NA  NA
+ [37]  NA  29  NA  71  39  NA  NA  23  NA  NA  21  37  20  12  13  NA  NA  NA
+ [55]  NA  NA  NA  NA  NA  NA  NA 135  49  32  NA  64  40  77  97  97  85  NA
+ [73]  10  27  NA   7  48  35  61  79  63  16  NA  NA  80 108  20  52  82  50
+ [91]  64  59  39   9  16  78  35  66 122  89 110  NA  NA  44  28  65  NA  22
+[109]  59  23  31  44  21   9  NA  45 168  73  NA  76 118  84  85  96  78  73
+[127]  91  47  32  20  23  21  24  44  21  28   9  13  46  18  13  24  16  13
+[145]  23  36   7  14  30  NA  14  18  20
+> justOzone <-matrixhw[,c(1), drop=FALSE]
+> justOzone
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> new1 <- subset(matrixhw, Temp > 90, select = c(Ozone, Temp))
+Error in subset.matrix(matrixhw, Temp > 90, select = c(Ozone, Temp)) : 
+  object 'Temp' not found
+> justOzone
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> justOzone31 <- subset(justOzone, justOzone > 31) 
+> justOzone31
+      Ozone
+ [1,]    41
+ [2,]    36
+ [3,]    34
+ [4,]    32
+ [5,]    45
+ [6,]   115
+ [7,]    37
+ [8,]    71
+ [9,]    39
+[10,]    37
+[11,]   135
+[12,]    49
+[13,]    32
+[14,]    64
+[15,]    40
+[16,]    77
+[17,]    97
+[18,]    97
+[19,]    85
+[20,]    48
+[21,]    35
+[22,]    61
+[23,]    79
+[24,]    63
+[25,]    80
+[26,]   108
+[27,]    52
+[28,]    82
+[29,]    50
+[30,]    64
+[31,]    59
+[32,]    39
+[33,]    78
+[34,]    35
+[35,]    66
+[36,]   122
+[37,]    89
+[38,]   110
+[39,]    44
+[40,]    65
+[41,]    59
+[42,]    44
+[43,]    45
+[44,]   168
+[45,]    73
+[46,]    76
+[47,]   118
+[48,]    84
+[49,]    85
+[50,]    96
+[51,]    78
+[52,]    73
+[53,]    91
+[54,]    47
+[55,]    32
+[56,]    44
+[57,]    46
+[58,]    36
+> ozoneColumn <- matrixhw[,1,drop=FALSE]
+> ozoneColumn
+       Ozone
+  [1,]    41
+  [2,]    36
+  [3,]    12
+  [4,]    18
+  [5,]    NA
+  [6,]    28
+  [7,]    23
+  [8,]    19
+  [9,]     8
+ [10,]    NA
+ [11,]     7
+ [12,]    16
+ [13,]    11
+ [14,]    14
+ [15,]    18
+ [16,]    14
+ [17,]    34
+ [18,]     6
+ [19,]    30
+ [20,]    11
+ [21,]     1
+ [22,]    11
+ [23,]     4
+ [24,]    32
+ [25,]    NA
+ [26,]    NA
+ [27,]    NA
+ [28,]    23
+ [29,]    45
+ [30,]   115
+ [31,]    37
+ [32,]    NA
+ [33,]    NA
+ [34,]    NA
+ [35,]    NA
+ [36,]    NA
+ [37,]    NA
+ [38,]    29
+ [39,]    NA
+ [40,]    71
+ [41,]    39
+ [42,]    NA
+ [43,]    NA
+ [44,]    23
+ [45,]    NA
+ [46,]    NA
+ [47,]    21
+ [48,]    37
+ [49,]    20
+ [50,]    12
+ [51,]    13
+ [52,]    NA
+ [53,]    NA
+ [54,]    NA
+ [55,]    NA
+ [56,]    NA
+ [57,]    NA
+ [58,]    NA
+ [59,]    NA
+ [60,]    NA
+ [61,]    NA
+ [62,]   135
+ [63,]    49
+ [64,]    32
+ [65,]    NA
+ [66,]    64
+ [67,]    40
+ [68,]    77
+ [69,]    97
+ [70,]    97
+ [71,]    85
+ [72,]    NA
+ [73,]    10
+ [74,]    27
+ [75,]    NA
+ [76,]     7
+ [77,]    48
+ [78,]    35
+ [79,]    61
+ [80,]    79
+ [81,]    63
+ [82,]    16
+ [83,]    NA
+ [84,]    NA
+ [85,]    80
+ [86,]   108
+ [87,]    20
+ [88,]    52
+ [89,]    82
+ [90,]    50
+ [91,]    64
+ [92,]    59
+ [93,]    39
+ [94,]     9
+ [95,]    16
+ [96,]    78
+ [97,]    35
+ [98,]    66
+ [99,]   122
+[100,]    89
+[101,]   110
+[102,]    NA
+[103,]    NA
+[104,]    44
+[105,]    28
+[106,]    65
+[107,]    NA
+[108,]    22
+[109,]    59
+[110,]    23
+[111,]    31
+[112,]    44
+[113,]    21
+[114,]     9
+[115,]    NA
+[116,]    45
+[117,]   168
+[118,]    73
+[119,]    NA
+[120,]    76
+[121,]   118
+[122,]    84
+[123,]    85
+[124,]    96
+[125,]    78
+[126,]    73
+[127,]    91
+[128,]    47
+[129,]    32
+[130,]    20
+[131,]    23
+[132,]    21
+[133,]    24
+[134,]    44
+[135,]    21
+[136,]    28
+[137,]     9
+[138,]    13
+[139,]    46
+[140,]    18
+[141,]    13
+[142,]    24
+[143,]    16
+[144,]    13
+[145,]    23
+[146,]    36
+[147,]     7
+[148,]    14
+[149,]    30
+[150,]    NA
+[151,]    14
+[152,]    18
+[153,]    20
+> ozoneColumnP <- subset(ozoneColumn, ozoneColumn > 31)
+> tempColumn <- matrixhw[,4,drop=FALSE]
+> tempColumnP <- subset(tempColumn, tempColumn > 90)
+> nrow(tempColumnP)
+[1] 14
+> nrow(ozoneColumnP)
+[1] 58
+> bothcol <- matrixhw[, c(1,4)]
+> newboth <- subset(bothcol, Temp > 90  &  Ozone > 31)
+Error in subset.matrix(bothcol, Temp > 90 & Ozone > 31) : 
+  object 'Temp' not found
+> names(matrixhw)
+NULL
+> names(hw1data)
+[1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"    
+> newboth <- subset(bothcol$Temp > 90  &  bothcol$Ozone > 31)
+Error in bothcol$Temp : $ operator is invalid for atomic vectors
+> names(hw1data)
+[1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"    
+> newboth <- subset(hw1data$Temp > 90  &  hw1data$Ozone > 31)
+Error in subset.default(hw1data$Temp > 90 & hw1data$Ozone > 31) : 
+  argument "subset" is missing, with no default
+> newboth <- hw1data[hw1data$Temp > 90  &  hw1data$Ozone > 31,]
+> newboth
+     Ozone Solar.R Wind Temp Month Day
+NA      NA      NA   NA   NA    NA  NA
+NA.1    NA      NA   NA   NA    NA  NA
+69      97     267  6.3   92     7   8
+70      97     272  5.7   92     7   9
+NA.2    NA      NA   NA   NA    NA  NA
+NA.3    NA      NA   NA   NA    NA  NA
+120     76     203  9.7   97     8  28
+121    118     225  2.3   94     8  29
+122     84     237  6.3   96     8  30
+123     85     188  6.3   94     8  31
+124     96     167  6.9   91     9   1
+125     78     197  5.1   92     9   2
+126     73     183  2.8   93     9   3
+127     91     189  4.6   93     9   4
+> nrows(hw1data)
+Error: could not find function "nrows"
+> nrow(hw1data)
+[1] 153
+> ncol(hw1data)
+[1] 6
+> bad <- is.na(newboth)
+> bad
+     Ozone Solar.R  Wind  Temp Month   Day
+NA    TRUE    TRUE  TRUE  TRUE  TRUE  TRUE
+NA.1  TRUE    TRUE  TRUE  TRUE  TRUE  TRUE
+69   FALSE   FALSE FALSE FALSE FALSE FALSE
+70   FALSE   FALSE FALSE FALSE FALSE FALSE
+NA.2  TRUE    TRUE  TRUE  TRUE  TRUE  TRUE
+NA.3  TRUE    TRUE  TRUE  TRUE  TRUE  TRUE
+120  FALSE   FALSE FALSE FALSE FALSE FALSE
+121  FALSE   FALSE FALSE FALSE FALSE FALSE
+122  FALSE   FALSE FALSE FALSE FALSE FALSE
+123  FALSE   FALSE FALSE FALSE FALSE FALSE
+124  FALSE   FALSE FALSE FALSE FALSE FALSE
+125  FALSE   FALSE FALSE FALSE FALSE FALSE
+126  FALSE   FALSE FALSE FALSE FALSE FALSE
+127  FALSE   FALSE FALSE FALSE FALSE FALSE
+> justSolar <- newboth[,2]
+> justSolar 
+ [1]  NA  NA 267 272  NA  NA 203 225 237 188 167 197 183 189
+> bad <- is.na(justSolar)
+> mean(justSolar[!bad])
+[1] 212.8
+> newMonth <- hw1data[hw1data$Month="6",]
+Error: unexpected '=' in "newMonth <- hw1data[hw1data$Month="
+> newMonth <- hw1data[hw1data$Month=="6",]
+> newMonth
+   Ozone Solar.R Wind Temp Month Day
+32    NA     286  8.6   78     6   1
+33    NA     287  9.7   74     6   2
+34    NA     242 16.1   67     6   3
+35    NA     186  9.2   84     6   4
+36    NA     220  8.6   85     6   5
+37    NA     264 14.3   79     6   6
+38    29     127  9.7   82     6   7
+39    NA     273  6.9   87     6   8
+40    71     291 13.8   90     6   9
+41    39     323 11.5   87     6  10
+42    NA     259 10.9   93     6  11
+43    NA     250  9.2   92     6  12
+44    23     148  8.0   82     6  13
+45    NA     332 13.8   80     6  14
+46    NA     322 11.5   79     6  15
+47    21     191 14.9   77     6  16
+48    37     284 20.7   72     6  17
+49    20      37  9.2   65     6  18
+50    12     120 11.5   73     6  19
+51    13     137 10.3   76     6  20
+52    NA     150  6.3   77     6  21
+53    NA      59  1.7   76     6  22
+54    NA      91  4.6   76     6  23
+55    NA     250  6.3   76     6  24
+56    NA     135  8.0   75     6  25
+57    NA     127  8.0   78     6  26
+58    NA      47 10.3   73     6  27
+59    NA      98 11.5   80     6  28
+60    NA      31 14.9   77     6  29
+61    NA     138  8.0   83     6  30
+> justTemp = newMonth[,4]
+> bad <- is.na(justTemp)
+> mean(justTemp[!bad])
+[1] 79.1
+> monthMay <- hw1data[hw1data$Month=="5",]
+> justOzoneMay <- monthMay[,1]
+> max(justOzoneMay)
+[1] NA
+> bad <- is.na(justOzoneMay)
+> max(justOzoneMay[!bad])
+[1] 115
+> x <- c("a", "b", "c")
+> for(i in 1:4) { print(x[i])}
+[1] "a"
+[1] "b"
+[1] "c"
+[1] NA
+> for(i in seq_along(x)) { print(x[i])}
+[1] "a"
+[1] "b"
+[1] "c"
+> for(my in x) { print(my) }
+[1] "a"
+[1] "b"
+[1] "c"
+> pwd
+Error: object 'pwd' not found
+> pwd()
+Error: could not find function "pwd"
+> wd()
+Error: could not find function "wd"
+> getwd()
+[1] "/Users/maryam/Documents/coursera-2015 October/R programming-coursera/all R codes"
+> cd Week1
+Error: unexpected symbol in "cd Week1"
+> dir
+function (path = ".", pattern = NULL, all.files = FALSE, full.names = FALSE, 
+    recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, 
+    no.. = FALSE) 
+.Internal(list.files(path, pattern, all.files, full.names, recursive, 
+    ignore.case, include.dirs, no..))
+<bytecode: 0x7fe861e16200>
+<environment: namespace:base>
+> ls
+function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE, 
+    pattern, sorted = TRUE) 
+{
+    if (!missing(name)) {
+        pos <- tryCatch(name, error = function(e) e)
+        if (inherits(pos, "error")) {
+            name <- substitute(name)
+            if (!is.character(name)) 
+                name <- deparse(name)
+            warning(gettextf("%s converted to character string", 
+                sQuote(name)), domain = NA)
+            pos <- name
+        }
+    }
+    all.names <- .Internal(ls(envir, all.names, sorted))
+    if (!missing(pattern)) {
+        if ((ll <- length(grep("[", pattern, fixed = TRUE))) && 
+            ll != length(grep("]", pattern, fixed = TRUE))) {
+            if (pattern == "[") {
+                pattern <- "\\["
+                warning("replaced regular expression pattern '[' by  '\\\\['")
+            }
+            else if (length(grep("[^\\\\]\\[<-", pattern))) {
+                pattern <- sub("\\[<-", "\\\\\\[<-", pattern)
+                warning("replaced '[<-' by '\\\\[<-' in regular expression pattern")
+            }
+        }
+        grep(pattern, all.names, value = TRUE)
+    }
+    else all.names
+}
+<bytecode: 0x7fe8630f5bb8>
+<environment: namespace:base>
+> dir()
+[1] "Week 1" "Week 2"
+> cd Week1
+Error: unexpected symbol in "cd Week1"
+> getwd()
+[1] "/Users/maryam/Documents/coursera-2015 October/R programming-coursera/all R codes/Week 2"
+> dir()
+[1] "funcfirst.R"
+> funcfirst()
+Error: could not find function "funcfirst"
+> funcfirst()
+Error: could not find function "funcfirst"
+> add2(2,3)
+Error: could not find function "add2"
+> add2(2,3)
+Error: could not find function "add2"
+> add2(2,3)
+Error: could not find function "add2"
+> dir()
+[1] "add2.R"
+> add2
+Error: object 'add2' not found
+> add2()
+Error: could not find function "add2"
+> add2(2,3)
+Error: could not find function "add2"
+> add2()
+Error: could not find function "add2"
+> args(paste)
+function (..., sep = " ", collapse = NULL) 
+NULL
+> args(cat)
+function (..., file = "", sep = " ", fill = FALSE, labels = NULL, 
+    append = FALSE) 
+NULL
+> paste("a", "b", sep=":")
+[1] "a:b"
+> paste("a", "b", sep="")
+[1] "ab"
+> paste("a", "b", sep=" ")
+[1] "a b"
+> paste("a", "b", se=" ")
+[1] "a b  "
+> search()
+ [1] ".GlobalEnv"        "tools:RGUI"        "package:stats"    
+ [4] "package:graphics"  "package:grDevices" "package:utils"    
+ [7] "package:datasets"  "package:methods"   "Autoloads"        
+[10] "package:base"     
+> as.Date("1970-01-01")
+[1] "1970-01-01"
+> x <- as.Date("1970-01-01")
+> x
+[1] "1970-01-01"
+> unclass(x)
+[1] 0
+> weekdays()
+Error in UseMethod("weekdays") : 
+  no applicable method for 'weekdays' applied to an object of class "NULL"
+> weekdays
+function (x, abbreviate) 
+UseMethod("weekdays")
+<bytecode: 0x7fe8638929c8>
+<environment: namespace:base>
+> weekdays.Date
+function (x, abbreviate = FALSE) 
+format(x, ifelse(abbreviate, "%a", "%A"))
+<bytecode: 0x7fe861ff68e0>
+<environment: namespace:base>
+> weekdays.POSIXt
+function (x, abbreviate = FALSE) 
+{
+    format(x, ifelse(abbreviate, "%a", "%A"))
+}
+<bytecode: 0x7fe861fa3188>
+<environment: namespace:base>
+> x <- Sys.time
+> x
+function () 
+.POSIXct(.Internal(Sys.time()))
+<bytecode: 0x7fe862eb9758>
+<environment: namespace:base>
+> x <- Sys.time()
+> x
+[1] "2015-11-15 21:41:29 CET"
+> p <- as.POSIXlt(x)
+> p
+[1] "2015-11-15 21:41:29 CET"
+> grep("specdata", directory)
+Error in grep("specdata", directory) : object 'directory' not found
+> directory <- "specdata"
+> grep("specdata", directory)
+[1] 1
+> directory <- "specdata2"
+> grep("specdata", directory)
+[1] 1
+> directory <- "specda"
+> grep("specdata", directory)
+integer(0)
+> x <- list(a = 1:5, b=rnorm(10))
+> lapply(x, mean)
+$a
+[1] 3
+
+$b
+[1] -0.0429766
+
+> x <- 1:4
+> lapply(x, runif)
+[[1]]
+[1] 0.2677982
+
+[[2]]
+[1] 0.4544937 0.4576902
+
+[[3]]
+[1] 0.6180851 0.1022092 0.7685079
+
+[[4]]
+[1] 0.08990539 0.30600357 0.52594272 0.62331727
+
+> lapply(x, runif, min = 0, max = 10)
+[[1]]
+[1] 9.788186
+
+[[2]]
+[1] 3.134021 6.293552
+
+[[3]]
+[1] 0.04596608 9.15613826 8.51425478
+
+[[4]]
+[1] 6.235152 3.100285 6.740858 9.070326
+
+> x <- list(a=matrix(1:4, 2,2), b=matrix(1:6, 3,2))
+> x
+$a
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+$b
+     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6
+
+> lapply(x, function(elt) elt[,1])
+$a
+[1] 1 2
+
+$b
+[1] 1 2 3
+
+> str(apply)
+function (X, MARGIN, FUN, ...)  
+> x <- matrix(rnorm(200),20,10)
+> x
+            [,1]        [,2]        [,3]        [,4]        [,5]         [,6]
+ [1,] -0.6043011  0.30482413  0.42595781  1.02501876 -1.14229470  1.103607552
+ [2,] -0.5249095  1.41549981  0.07230345 -2.08654009 -1.08381911 -1.491537684
+ [3,] -0.3752062 -0.32219556 -0.66455905  0.27465940  0.51023308 -1.651914307
+ [4,] -0.2571868  0.23309716  0.14853273  0.79430800  1.37033228 -0.268909403
+ [5,]  0.8085849  0.01999433 -0.96960760  0.65641176  1.02921639 -0.482386208
+ [6,] -0.9031215 -3.08636384 -1.01774281  0.05119297 -0.58339011 -2.261195857
+ [7,] -1.9845646 -0.16022893 -1.31745140 -1.41072077 -1.07541806 -0.178201105
+ [8,]  0.4893753  0.16130389  0.08565016  0.44632762 -1.74302978  0.055073205
+ [9,]  1.1222431 -1.46554979 -1.04645588 -0.32139097 -0.61627164  0.008344827
+[10,]  0.8343286  0.19238372 -1.57479603  0.65125638  0.40864914  0.784845635
+[11,] -1.1408158  1.92030117  0.39960709  0.35747412  0.09475918  0.867421267
+[12,] -2.2919637  1.11508809 -0.44649223  1.26113697 -0.83552674  0.243115040
+[13,] -2.1305275 -0.50729489 -1.70375180  3.45332723  0.08818251 -0.437162519
+[14,]  0.9045838  0.11698105  0.61644317  0.84850962 -0.89102831  0.496947151
+[15,]  0.1062706 -0.65833356 -0.39059359  0.31606844 -0.13433748  1.168663589
+[16,] -1.1840752  1.53144560 -0.14360452 -1.13561992  1.19001891 -1.303996177
+[17,] -0.4226117 -0.08006989 -0.99682119 -0.15624721 -1.35125675 -0.344841260
+[18,]  0.8054975 -1.12096856  1.40774671  1.19552445 -0.39138580  0.871264408
+[19,]  1.3391197 -1.26762733  1.78066818  0.49203730  0.42839848 -0.636137374
+[20,]  0.2811115 -1.00238002 -0.51966043 -2.06112807  0.96957639  1.070516482
+              [,7]        [,8]        [,9]      [,10]
+ [1,]  0.355503747 -0.76213460  0.60875108  1.1608432
+ [2,]  1.233137773 -0.10761962 -0.85416254  0.2907518
+ [3,] -0.824688370  0.53890112 -0.30290381  0.1214597
+ [4,]  1.188671094 -0.55357322  2.21914044 -2.0529908
+ [5,] -0.133383685  0.63521891  1.22176116  1.6146036
+ [6,] -1.046393233 -0.92489161 -1.03491809  0.9475561
+ [7,]  0.001814945 -0.50417633  1.18004609 -0.5992976
+ [8,] -1.541181257 -0.49824715 -0.39692630 -0.1048422
+ [9,]  1.877964692 -0.39875727  0.71637056  0.3427199
+[10,] -0.706867778 -1.15567870 -0.90319075  1.6381889
+[11,] -0.109864625  0.21800345  1.09014299  0.3346103
+[12,] -0.016350307 -0.03397471 -0.03824060 -1.7992076
+[13,] -0.060781797 -0.23516791 -0.30090434 -0.2839779
+[14,] -1.798865440 -1.08892501 -0.84274818 -1.3096261
+[15,]  0.307938302  0.46948111 -2.19392616 -0.7246960
+[16,]  0.833966931 -0.12795904  0.02091152 -1.2512916
+[17,]  0.222068409 -2.70367579 -0.39093038 -0.5148616
+[18,] -0.275908043 -0.04861765  0.60213628  1.5732107
+[19,] -2.936481867  0.08682792  1.91447063 -0.3504940
+[20,]  0.514529270 -0.43703703 -2.97651087  0.5622303
+> str(apply)
+function (X, MARGIN, FUN, ...)  
+> rowSums = apply(x, 1, sum)
+> rowMeans = apply(x, 1, mean)
+> str(mapply)
+function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE)  
+> list(rep(1,4), rep(2,3), rep(3,2), rep(4,1))
+[[1]]
+[1] 1 1 1 1
+
+[[2]]
+[1] 2 2 2
+
+[[3]]
+[1] 3 3
+
+[[4]]
+[1] 4
+
+> mapply(rep,1:4, 4:1)
+[[1]]
+[1] 1 1 1 1
+
+[[2]]
+[1] 2 2 2
+
+[[3]]
+[1] 3 3
+
+[[4]]
+[1] 4
+
+> str(taply)
+Error in str(taply) : object 'taply' not found
+> str(tapply)
+function (X, INDEX, FUN = NULL, ..., simplify = TRUE)  
+> str(split)
+function (x, f, drop = FALSE, ...)  
+> x <- c(rnorm(10), runif(10), rnorm(10,1))
+> f <- gl(3,10)
+> split(x,f)
+$`1`
+ [1] -0.81798017 -0.88471550 -0.90291868 -1.13318139  0.02982883  0.13981158
+ [7]  0.80757024  0.61857033 -1.43191959  0.55377663
+
+$`2`
+ [1] 0.3595495 0.6145512 0.3444611 0.9459470 0.3459030 0.8132286 0.8624411
+ [8] 0.6894003 0.1243695 0.8089364
+
+$`3`
+ [1] -0.8785990279 -0.6419825224 -0.0007632946  0.6774253405 -1.0889022815
+ [6]  0.7943341065  1.9325489163 -1.9521914008  1.2087829206 -1.3386434467
+
+> x
+ [1] -0.8179801703 -0.8847155009 -0.9029186791 -1.1331813929  0.0298288303
+ [6]  0.1398115757  0.8075702407  0.6185703257 -1.4319195930  0.5537766309
+[11]  0.3595494714  0.6145511603  0.3444611400  0.9459469873  0.3459029626
+[16]  0.8132286118  0.8624410741  0.6894002536  0.1243695451  0.8089364159
+[21] -0.8785990279 -0.6419825224 -0.0007632946  0.6774253405 -1.0889022815
+[26]  0.7943341065  1.9325489163 -1.9521914008  1.2087829206 -1.3386434467
+> x <- rnorm(10)
+> x
+ [1] -0.2959436  0.4355284 -0.2705134  0.6889278  0.2043609  1.2914468 -1.3285904
+ [8] -0.9143329  0.6568392 -0.2243869
+> f1 <- gl(2,5)
+> f1
+ [1] 1 1 1 1 1 2 2 2 2 2
+Levels: 1 2
+> f2 <- gl(5,2)
+> f2
+ [1] 1 1 2 2 3 3 4 4 5 5
+Levels: 1 2 3 4 5
+> interaction(f1, f2)
+ [1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+Levels: 1.1 2.1 1.2 2.2 1.3 2.3 1.4 2.4 1.5 2.5
+> log(-1)
+[1] NaN
+Warning message:
+In log(-1) : NaNs produced
+> ?iris
+starting httpd help server ... done
+> library(datasets)
+> data(iris)
+> class(iris)
+[1] "data.frame"
+> nrow(iris)
+[1] 150
+> ncol(iris)
+[1] 5
+> justvir <- iris[iris$Species == "virginica"]
+Error in `[.data.frame`(iris, iris$Species == "virginica") : 
+  undefined columns selected
+> justvir <- iris["Species" == "virginica"]
+> head(justvir)
+data frame with 0 columns and 6 rows
+> justvir2 <- iris[,"Species" == "virginica"]
+> head(justvir2)
+data frame with 0 columns and 6 rows
+> head(iris)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> justvir3 <- iris[,"Species" == "setosa"]
+> head(justvir3)
+data frame with 0 columns and 6 rows
+> justvir3 <- iris[,c(1,5)]
+> head(justvir3)
+  Sepal.Length Species
+1          5.1  setosa
+2          4.9  setosa
+3          4.7  setosa
+4          4.6  setosa
+5          5.0  setosa
+6          5.4  setosa
+> justvir4 <- justvir3[justvir3$Species=="virginica"]
+Error in `[.data.frame`(justvir3, justvir3$Species == "virginica") : 
+  undefined columns selected
+> just15 <- iris[,c(1,5), drop=FALSE]
+> head(just15)
+  Sepal.Length Species
+1          5.1  setosa
+2          4.9  setosa
+3          4.7  setosa
+4          4.6  setosa
+5          5.0  setosa
+6          5.4  setosa
+> justvir4 <- just15[just15$Species=="virginica"]
+Error in `[.data.frame`(just15, just15$Species == "virginica") : 
+  undefined columns selected
+> justvir4 <- just15[just15$Species=="virginica", drop=FALSE]
+Error in `[.data.frame`(just15, just15$Species == "virginica", drop = FALSE) : 
+  undefined columns selected
+In addition: Warning message:
+In `[.data.frame`(just15, just15$Species == "virginica", drop = FALSE) :
+  'drop' argument will be ignored
+> class(just15)
+[1] "data.frame"
+> justvir4 <- just15[just15$Species==virginica]
+Error in `[.data.frame`(just15, just15$Species == virginica) : 
+  object 'virginica' not found
+> justvir4 <- just15[,just15$Species == virginica]
+Error in `[.data.frame`(just15, , just15$Species == virginica) : 
+  object 'virginica' not found
+> justvir4 <- just15[just15$Species == virginica, ]
+Error in `[.data.frame`(just15, just15$Species == virginica, ) : 
+  object 'virginica' not found
+> justvir4 <- just15[just15$Species == 'virginica', ]
+> head(justvir4)
+    Sepal.Length   Species
+101          6.3 virginica
+102          5.8 virginica
+103          7.1 virginica
+104          6.3 virginica
+105          6.5 virginica
+106          7.6 virginica
+> meanVal <- mean(justvir4[,1])
+> meanVal
+[1] 6.588
+> mean(iris$Sepal.Length [iris$Species=="virginica"],na.rm=TRUE)
+[1] 6.588
+> apply(iris[, 1:4], 2, mean)
+Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+    5.843333     3.057333     3.758000     1.199333 
+> library(datasets)
+> data(mtcars)
+> ?mtcars
+> head(mtcars)
+                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+> avg(c(1,2,3,4))
+Error: could not find function "avg"
+> mean(c(1,2,3,4))
+[1] 2.5
+> mean(mtcars$hp[mtcars$cyl==4], na.rm=TRUE)
+[1] 82.63636
+> mean(mtcars$hp[mtcars$cyl==8], na.rm=TRUE)
+[1] 209.2143
+> maen4 <- mean(mtcars$hp[mtcars$cyl==4], na.rm=TRUE)
+> mean8 <- mean(mtcars$hp[mtcars$cyl==8], na.rm=TRUE)
+> diff <- mean8 - maen4
+> diff
+[1] 126.5779
+> tapply(mtcars$hp, mtcars$cyl, mean)
+        4         6         8 
+ 82.63636 122.28571 209.21429 
+> 
