@@ -1,0 +1,250 @@
+hw1data[1,]
+hw1data[153,]
+hw1data[152,]
+hw1data[47,]
+hw1data[0,]
+hw1data[,1]
+pp <- is.na(hw1data)
+pp[,1]
+nrow(pp[,1])
+ncol(pp[,1])
+class(pp[,1])
+nrow(pp)
+ncol(pp)
+jcol2 <- hw1data[,1]
+jcol2
+nrow(jcol2)
+class(jcol2)
+is.na(jcol2)
+p <- is.na(jcol2)
+p
+pp <- c(p,1)
+pp
+sum(pp)
+h1 <- c(hw1data[,1])
+h1
+class(h1)
+nrow(h1)
+class(hw1data)
+matrixhw <- data.matrix(hw1data)
+matrixhw
+class(matrixhw)
+nrow(matrixhw)
+ncol(matrixhw)
+jcol2m <- matrixhw[,1]
+jcol2m
+class(jcol2m)
+jcol2mf <- matrixhw[,1, drop=FALSE]
+jcol2mf
+class(jcol2mf)
+nrow(jcol2mf)
+ncol(jcol2mf)
+bad <-is.na(jcol2mf)
+bad
+arebad <- jcol2mf[bad]
+nrow(arebad)
+arebad <- jcol2mf[bad, drop=FALSE]
+nrow(arebad)
+class(arebad)
+arebad
+jcol2mf
+jcol2mf[bad]
+jcol2mf[!bad]
+length(jcol2mf[bad])
+justNum <- jcol2mf[!bad]
+justNum
+mean(justNum)
+matrixhw
+matrixhw[, 1,4]
+matrixhw[, 4]
+class(matrixhw)
+ozonCol <- matrixhw[,1]
+tempCol <- matrixhw[,4]
+both <- c(ozonCol, tempCol)
+both
+class(ozonCol)
+ozonCol2 <- matrixhw[, 1, drop=FALSE]
+ozonCol2
+tempCol2 <- matrixhw[, 4, drop=FALSE]
+tempCol2
+both2 <- c(ozonCol2, tempCol2)
+both2
+both3 <- c(ozonCol2, tempCol2, drop=FALSE)
+both3
+both4 <-matrix(ozonCol2, tempCol2)
+both5 <-matrixhw[,c(1,4)]
+both5
+matrixhw
+justOzone <-matrixhw[,c(1)]
+justOzone
+justOzone <-matrixhw[,c(1), drop=FALSE]
+justOzone
+new1 <- subset(matrixhw, Temp > 90, select = c(Ozone, Temp))
+justOzone
+justOzone31 <- subset(justOzone, justOzone > 31)
+justOzone31
+ozoneColumn <- matrixhw[,1,drop=FALSE]
+ozoneColumn
+ozoneColumnP <- subset(ozoneColumn, ozoneColumn > 31)
+tempColumn <- matrixhw[,4,drop=FALSE]
+tempColumnP <- subset(tempColumn, tempColumn > 90)
+nrow(tempColumnP)
+nrow(ozoneColumnP)
+bothcol <- matrixhw[, c(1,4)]
+newboth <- subset(bothcol, Temp > 90  &  Ozone > 31)
+names(matrixhw)
+names(hw1data)
+newboth <- subset(bothcol$Temp > 90  &  bothcol$Ozone > 31)
+names(hw1data)
+newboth <- subset(hw1data$Temp > 90  &  hw1data$Ozone > 31)
+newboth <- hw1data[hw1data$Temp > 90  &  hw1data$Ozone > 31,]
+newboth
+nrows(hw1data)
+nrow(hw1data)
+ncol(hw1data)
+bad <- is.na(newboth)
+bad
+justSolar <- newboth[,2]
+justSolar
+bad <- is.na(justSolar)
+mean(justSolar[!bad])
+newMonth <- hw1data[hw1data$Month="6",]
+newMonth <- hw1data[hw1data$Month=="6",]
+newMonth
+justTemp = newMonth[,4]
+bad <- is.na(justTemp)
+mean(justTemp[!bad])
+monthMay <- hw1data[hw1data$Month=="5",]
+justOzoneMay <- monthMay[,1]
+max(justOzoneMay)
+bad <- is.na(justOzoneMay)
+max(justOzoneMay[!bad])
+x <- c("a", "b", "c")
+for(i in 1:4) { print(x[i])}
+for(i in seq_along(x)) { print(x[i])}
+for(my in x) { print(my) }
+pwd
+pwd()
+wd()
+getwd()
+cd Week1
+dir
+ls
+dir()
+cd Week1
+getwd()
+dir()
+funcfirst()
+funcfirst()
+add2(2,3)
+add2(2,3)
+add2(2,3)
+dir()
+add2
+add2()
+add2(2,3)
+add2()
+args(paste)
+args(cat)
+paste("a", "b", sep=":")
+paste("a", "b", sep="")
+paste("a", "b", sep=" ")
+paste("a", "b", se=" ")
+search()
+as.Date("1970-01-01")
+x <- as.Date("1970-01-01")
+x
+unclass(x)
+weekdays()
+weekdays
+weekdays.Date
+weekdays.POSIXt
+x <- Sys.time
+x
+x <- Sys.time()
+x
+p <- as.POSIXlt(x)
+p
+grep("specdata", directory)
+directory <- "specdata"
+grep("specdata", directory)
+directory <- "specdata2"
+grep("specdata", directory)
+directory <- "specda"
+grep("specdata", directory)
+x <- list(a = 1:5, b=rnorm(10))
+lapply(x, mean)
+x <- 1:4
+lapply(x, runif)
+lapply(x, runif, min = 0, max = 10)
+x <- list(a=matrix(1:4, 2,2), b=matrix(1:6, 3,2))
+x
+lapply(x, function(elt) elt[,1])
+str(apply)
+x <- matrix(rnorm(200),20,10)
+x
+str(apply)
+rowSums = apply(x, 1, sum)
+rowMeans = apply(x, 1, mean)
+str(mapply)
+list(rep(1,4), rep(2,3), rep(3,2), rep(4,1))
+mapply(rep,1:4, 4:1)
+str(taply)
+str(tapply)
+str(split)
+x <- c(rnorm(10), runif(10), rnorm(10,1))
+f <- gl(3,10)
+split(x,f)
+x
+x <- rnorm(10)
+x
+f1 <- gl(2,5)
+f1
+f2 <- gl(5,2)
+f2
+interaction(f1, f2)
+log(-1)
+?iris
+library(datasets)
+data(iris)
+class(iris)
+nrow(iris)
+ncol(iris)
+justvir <- iris[iris$Species == "virginica"]
+justvir <- iris["Species" == "virginica"]
+head(justvir)
+justvir2 <- iris[,"Species" == "virginica"]
+head(justvir2)
+head(iris)
+justvir3 <- iris[,"Species" == "setosa"]
+head(justvir3)
+justvir3 <- iris[,c(1,5)]
+head(justvir3)
+justvir4 <- justvir3[justvir3$Species=="virginica"]
+just15 <- iris[,c(1,5), drop=FALSE]
+head(just15)
+justvir4 <- just15[just15$Species=="virginica"]
+justvir4 <- just15[just15$Species=="virginica", drop=FALSE]
+class(just15)
+justvir4 <- just15[just15$Species==virginica]
+justvir4 <- just15[,just15$Species == virginica]
+justvir4 <- just15[just15$Species == virginica, ]
+justvir4 <- just15[just15$Species == 'virginica', ]
+head(justvir4)
+meanVal <- mean(justvir4[,1])
+meanVal
+mean(iris$Sepal.Length [iris$Species=="virginica"],na.rm=TRUE)
+apply(iris[, 1:4], 2, mean)
+library(datasets)
+data(mtcars)
+?mtcars
+head(mtcars)
+avg(c(1,2,3,4))
+mean(c(1,2,3,4))
+mean(mtcars$hp[mtcars$cyl==4], na.rm=TRUE)
+mean(mtcars$hp[mtcars$cyl==8], na.rm=TRUE)
+maen4 <- mean(mtcars$hp[mtcars$cyl==4], na.rm=TRUE)
+mean8 <- mean(mtcars$hp[mtcars$cyl==8], na.rm=TRUE)
+diff <- mean8 - maen4
+diff
+tapply(mtcars$hp, mtcars$cyl, mean)
